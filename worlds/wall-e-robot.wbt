@@ -10,8 +10,8 @@ EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2022b/project
 WorldInfo {
 }
 Viewpoint {
-  orientation -0.02726007179110236 0.026722945173251838 0.9992711207110968 1.5915282253709224
-  position 0.27892013503171736 -2.6319096357780896 0.48217997617647934
+  orientation 0.10197856209044578 -0.10508156373638831 0.9892210257756759 1.5516330242899334
+  position 0.12054535755781304 -2.600802414495561 0.03382798052568026
 }
 TexturedBackground {
 }
@@ -121,8 +121,6 @@ DEF myrobot Robot {
         boundingObject USE ball
         physics Physics {
         }
-        linearVelocity -3.351387786248571e-07 -1.0660301406566224e-07 1.7414066188109202e-10
-        angularVelocity 1.4488592700076314e-05 -1.701434271840501e-05 -1.4881074778525249e-07
       }
     }
     HingeJoint {
@@ -162,8 +160,6 @@ DEF myrobot Robot {
         boundingObject USE wheel
         physics Physics {
         }
-        linearVelocity -4.285669990605639e-08 -2.1428506664061863e-07 5.014320310944284e-08
-        angularVelocity 7.086994702482636e-07 5.627168677433232e-09 -2.227651222888573e-06
       }
     }
     HingeJoint {
@@ -202,8 +198,6 @@ DEF myrobot Robot {
         boundingObject USE wheel
         physics Physics {
         }
-        linearVelocity -4.445057778242628e-08 7.607026375559604e-09 4.9941598726986954e-08
-        angularVelocity 7.127385748832224e-07 5.656128211325162e-09 -2.2276513510701747e-06
       }
     }
     DEF body Shape {
