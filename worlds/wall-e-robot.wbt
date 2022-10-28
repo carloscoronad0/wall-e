@@ -2,24 +2,28 @@
 
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2022b/projects/objects/backgrounds/protos/TexturedBackground.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2022b/projects/objects/backgrounds/protos/TexturedBackgroundLight.proto"
-EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2022b/projects/objects/floors/protos/RectangleArena.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2022b/projects/objects/apartment_structure/protos/Wall.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2022b/projects/objects/floors/protos/Floor.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2022b/projects/objects/apartment_structure/protos/Ceiling.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2022b/projects/appearances/protos/Roughcast.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2022b/projects/objects/lights/protos/CeilingSpotLight.proto"
 
 WorldInfo {
+  basicTimeStep 0.1
 }
 Viewpoint {
-  orientation -0.11819607195838217 0.38669505753009936 0.9146018921123016 0.645078923611152
-  position -0.4654994588294886 -0.8980881426963748 0.18845185248957907
+  orientation 0.3628778442714662 -0.3272424556382911 -0.8724861290385736 4.474872756770491
+  position 0.17009524321704378 -1.5370213131407193 1.0827887370320597
 }
 TexturedBackground {
 }
 TexturedBackgroundLight {
   luminosity 0
 }
-DEF myrobot Robot {
-  translation 0.0010912590567937251 -0.2490469227093722 0.06875598459946554
-  rotation 0.5802247332770055 -0.5715598860429092 -0.5802228499122078 2.1032104528830065
+DEF wall-e Robot {
+  translation 0 0 0.04
+  rotation -0.5791343641132225 0.5806882579201876 0.5721927432402397 -2.078421807673565
+  scale 0.5 0.5 0.5
   children [
     DistanceSensor {
       translation 0 0.01 0.05
@@ -89,18 +93,18 @@ DEF myrobot Robot {
     }
     BallJoint {
       jointParameters BallJointParameters {
-        position -544.1204944074011
+        position -932.9599604129252
         anchor 0.07 -0.04 0
       }
       jointParameters2 JointParameters {
-        position -634.1220897676549
+        position -535.6379215983749
       }
       jointParameters3 JointParameters {
-        position 4088.2305663625816
+        position 4095.4661139259692
       }
       endPoint Solid {
-        translation 0.07368005956994306 -0.03882858402862172 -9.010606265555388e-06
-        rotation -0.9176818756843652 -0.3880773505623088 -0.08518183504107286 -1.1052597905833599
+        translation 0.07363546061605869 -0.040847508978507946 -0.00044703937134196584
+        rotation -0.9296419810053921 -0.17374896716035595 0.32492627404240404 4.917204372549131
         children [
           DEF ball Shape {
             appearance PBRAppearance {
@@ -115,13 +119,11 @@ DEF myrobot Robot {
         boundingObject USE ball
         physics Physics {
         }
-        linearVelocity 1.5844750787615054e-05 0.07954315031676702 -4.767580361314262e-05
-        angularVelocity -2.6517057254951655 0.0005275072213233623 -0.0027710851701009225
       }
     }
     HingeJoint {
       jointParameters HingeJointParameters {
-        position 48496.62089667446
+        position 51138.70428621225
         axis 0 0 1
         anchor -0.06 -0.04 -0.05
       }
@@ -139,8 +141,8 @@ DEF myrobot Robot {
         }
       ]
       endPoint Solid {
-        translation -0.060037590443515705 -0.04002441492185592 -0.04999755033990125
-        rotation -1.1554786446765944e-09 6.526700128955938e-09 0.9999999999999999 0.22580055445610897
+        translation -0.059982733864163654 -0.03996054968400112 -0.0500017252624447
+        rotation -4.272853106459104e-07 5.712426074400064e-07 0.9999999999997456 3.3713610768236713
         children [
           DEF wheel Shape {
             appearance PBRAppearance {
@@ -156,13 +158,11 @@ DEF myrobot Robot {
         boundingObject USE wheel
         physics Physics {
         }
-        linearVelocity 4.64498824583552e-06 0.07687883290536562 1.0562451955926912e-05
-        angularVelocity -2.5625720518136523 0.0001549988920029605 -5.31122135225728e-06
       }
     }
     HingeJoint {
       jointParameters HingeJointParameters {
-        position 27289.64461430466
+        position 25592.349407895792
         axis 0 0 1
         anchor -0.06 -0.04 0.05
       }
@@ -180,8 +180,8 @@ DEF myrobot Robot {
         }
       ]
       endPoint Solid {
-        translation -0.06003777950222266 -0.040018047463274746 0.050006331563772224
-        rotation 1.0784789322385712e-09 7.316578280789004e-10 1 2.4387100271617483
+        translation -0.06002723893565623 -0.040005280622793044 0.050009869648899835
+        rotation 2.122173963154948e-06 -3.8069273228680992e-06 -0.9999999999905019 4.67964875038897
         children [
           DEF wheel Shape {
             appearance PBRAppearance {
@@ -196,8 +196,6 @@ DEF myrobot Robot {
         boundingObject USE wheel
         physics Physics {
         }
-        linearVelocity 4.645026105342904e-06 0.07687947503401445 1.0608828779801478e-05
-        angularVelocity -2.562572090289533 0.00015499890974107587 -5.311168232449209e-06
       }
     }
     DEF body Shape {
@@ -208,47 +206,187 @@ DEF myrobot Robot {
       }
     }
   ]
-  name "myrobot"
+  name "wall-e"
   boundingObject USE body
   physics DEF body Physics {
   }
   controller "wall-e-controller"
   supervisor TRUE
-  linearVelocity 1.3991072196824552e-05 0.07388695273124299 -0.004597984284404667
-  angularVelocity 0.07742803641493133 -1.2779095484515666e-05 0.00016174820465352535
 }
-RectangleArena {
-  floorSize 1 3
+DEF box01-floor Floor {
+  name "box01-floor"
+  size 0.43 0.69
 }
-Wall {
-  translation -0.55 0 0
-  size 0.1 3 0.3
+DEF box01-wall01 Wall {
+  translation -0.21 0 0
+  name "box01-wall01"
+  size 0.01 0.69 0.3
 }
-DEF ceil Wall {
-  translation -0.59999 0 0.32
-  rotation 0 1 0 1.5708
-  name "wall(1)"
-  size 0.05 3 1.2
+DEF box01-wall02 Wall {
+  translation 5.19723e-15 0.34 0
+  rotation 0 0 1 -1.5707953071795862
+  name "box01-wall02"
+  size 0.01 0.43 0.3
 }
-Wall {
-  translation 0.56 0 0
-  name "wall(2)"
-  size 0.1 3 0.3
+DEF box01-wall03 Wall {
+  translation 0.21 0 0
+  name "box01-wall03"
+  size 0.01 0.69 0.3
 }
-CeilingSpotLight {
-  translation -0.3 1 0.2
-  name "ceiling light(1)"
-  spotLightIntensity 2
-  spotLightRadius 0.2
+DEF box01-ceiling Ceiling {
+  translation 0 0 0.3
+  name "box01-ceiling"
+  size 0.43 0.69
+  appearance Roughcast {
+    colorOverride 0 0 0
+    textureTransform TextureTransform {
+      scale 10 10
+    }
+  }
 }
-CeilingSpotLight {
-  translation 0.01 1.34 0.2
-  spotLightIntensity 2
-  spotLightRadius 0.2
+DEF box02-wall01 Wall {
+  translation -0.109997 -0.78 0
+  rotation 0 0 1 1.5708
+  name "box02-wall01"
+  size 0.01 0.36 0.3
 }
-CeilingSpotLight {
-  translation 0.2 -0.5 0.2
-  name "ceiling light(2)"
-  spotLightIntensity 2
-  spotLightRadius 0.2
+DEF box02-wall02 Wall {
+  translation -0.29 -0.57 0
+  name "box02-wall02"
+  size 0.01 0.43 0.3
+}
+DEF box02-wall03 Wall {
+  translation 0.39 -0.57 0
+  name "box02-wall03"
+  size 0.01 0.43 0.3
+}
+DEF box02-wall04 Wall {
+  translation -0.25 -0.35 2.87698e-09
+  rotation -9.58979e-09 9.58976e-09 -1 -1.5707953071795862
+  name "box02-wall04"
+  size 0.01 0.08 0.3
+}
+DEF box02-wall05 Wall {
+  translation 0.3 -0.35 2.87698e-09
+  rotation -9.58979e-09 9.58976e-09 -1 -1.5707953071795862
+  name "box02-wall05"
+  size 0.01 0.18 0.3
+}
+DEF box02-floor Floor {
+  translation 0.048 -0.56 0
+  name "box02-floor"
+  size 0.69 0.43
+}
+DEF box02-ceiling Ceiling {
+  translation 0.048 -0.56 0.3
+  name "box02-ceiling"
+  size 0.69 0.43
+  appearance Roughcast {
+    colorOverride 0 0 0
+    textureTransform TextureTransform {
+      scale 10 10
+    }
+  }
+}
+DEF box03-wall01 Wall {
+  translation 0.07 -1.02 0
+  name "box03-wall01"
+  size 0.01 0.48 0.3
+}
+DEF box03-wall02 Wall {
+  translation 0.39 -1.02 0
+  name "box03-wall02"
+  size 0.01 0.48 0.3
+}
+DEF box03-floor Floor {
+  translation 0.23 -1.014 0
+  name "box03-floor"
+  size 0.33 0.48
+}
+DEF box03-ceiling Ceiling {
+  translation 0.23 -1.014 0.3
+  name "box03-ceiling"
+  size 0.33 0.48
+  appearance Roughcast {
+    colorOverride 0 0 0
+    textureTransform TextureTransform {
+      scale 10 10
+    }
+  }
+}
+DEF box04-wall01 Wall {
+  translation 0.39 -1.62 0
+  name "box04-wall01"
+  size 0.01 0.72 0.3
+}
+DEF box04-wall02 Wall {
+  translation -0.37 -1.62 0
+  name "box04-wall02"
+  size 0.01 0.72 0.3
+}
+DEF box04-wall03 Wall {
+  translation 0.0100073 -1.98 0
+  rotation 0 0 1 1.5708
+  name "box04-wall03"
+  size 0.01 0.77 0.3
+}
+DEF box04-wall04 Wall {
+  translation -0.149995 -1.26 0
+  rotation 0 0 1 1.5708
+  name "box04-wall04"
+  size 0.01 0.44 0.3
+}
+DEF box04-floor Floor {
+  translation 0.01 -1.61 0
+  name "box04-floor"
+  size 0.77 0.73
+}
+DEF box04-ceiling Ceiling {
+  translation 0.01 -1.61 0.3
+  name "box04-ceiling"
+  size 0.77 0.73
+  appearance Roughcast {
+    colorOverride 0 0 0
+    textureTransform TextureTransform {
+      scale 10 10
+    }
+  }
+}
+DEF light01 CeilingSpotLight {
+  translation 0.13 0.07 0.33
+  name "light01"
+  spotLightRadius 0.3
+}
+DEF light02 CeilingSpotLight {
+  translation -0.11 -0.13 0.33
+  name "light02"
+  spotLightRadius 0.3
+}
+DEF light03 CeilingSpotLight {
+  translation -0.06 -0.48 0.33
+  name "light03"
+  spotLightRadius 0.3
+}
+DEF light04 CeilingSpotLight {
+  translation 0.31 -0.7 0.33
+  name "light04"
+  spotLightRadius 0.3
+}
+DEF light05 CeilingSpotLight {
+  translation 0.18 -1.26 0.33
+  rotation 0 1 0 0
+  name "light05"
+  spotLightRadius 0.3
+}
+DEF light06 CeilingSpotLight {
+  translation -0.21 -1.51 0.33
+  rotation 0 1 0 0
+  name "light06"
+  spotLightRadius 0.3
+}
+DEF light07 CeilingSpotLight {
+  translation 0.11 -1.73 0.33
+  rotation 0 1 0 0
+  name "light07"
+  spotLightRadius 0.3
 }
