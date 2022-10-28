@@ -13,7 +13,7 @@ WorldInfo {
 }
 Viewpoint {
   orientation 0.3628778442714662 -0.3272424556382911 -0.8724861290385736 4.474872756770491
-  position 0.17009524321704378 -1.5370213131407193 1.0827887370320597
+  position 0.17794638259630285 -1.404861910097111 1.2126805680630506
 }
 TexturedBackground {
 }
@@ -21,8 +21,8 @@ TexturedBackgroundLight {
   luminosity 0
 }
 DEF wall-e Robot {
-  translation 0 0 0.04
-  rotation -0.5791343641132225 0.5806882579201876 0.5721927432402397 -2.078421807673565
+  translation -0.00022252449409791188 0.002870748306721982 0.03500811994324181
+  rotation 0.5804901661727087 -0.5757485874054912 -0.5757992107300623 2.0888458906350733
   scale 0.5 0.5 0.5
   children [
     DistanceSensor {
@@ -93,18 +93,18 @@ DEF wall-e Robot {
     }
     BallJoint {
       jointParameters BallJointParameters {
-        position -932.9599604129252
+        position -932.9705991131308
         anchor 0.07 -0.04 0
       }
       jointParameters2 JointParameters {
-        position -535.6379215983749
+        position -535.6409406384979
       }
       jointParameters3 JointParameters {
-        position 4095.4661139259692
+        position 4095.4672480839736
       }
       endPoint Solid {
-        translation 0.07363546061605869 -0.040847508978507946 -0.00044703937134196584
-        rotation -0.9296419810053921 -0.17374896716035595 0.32492627404240404 4.917204372549131
+        translation 0.07373031104565243 -0.040048884922270905 -0.00046591406021116965
+        rotation 0.9388883752326351 0.2830233083457557 -0.19592454105100163 1.3299634822223383
         children [
           DEF ball Shape {
             appearance PBRAppearance {
@@ -119,11 +119,13 @@ DEF wall-e Robot {
         boundingObject USE ball
         physics Physics {
         }
+        linearVelocity -0.0006654897183714947 0.03838115071969576 -5.127624085560499e-09
+        angularVelocity -2.5587595048620146 -0.044368137987466534 -0.13677695733539388
       }
     }
     HingeJoint {
       jointParameters HingeJointParameters {
-        position 51138.70428621225
+        position 51138.92738078391
         axis 0 0 1
         anchor -0.06 -0.04 -0.05
       }
@@ -141,8 +143,8 @@ DEF wall-e Robot {
         }
       ]
       endPoint Solid {
-        translation -0.059982733864163654 -0.03996054968400112 -0.0500017252624447
-        rotation -4.272853106459104e-07 5.712426074400064e-07 0.9999999999997456 3.3713610768236713
+        translation -0.05999189008855573 -0.039957707255758264 -0.0500017252624447
+        rotation -4.977044892209937e-07 5.302348906056008e-07 0.9999999999997355 3.594455648489183
         children [
           DEF wheel Shape {
             appearance PBRAppearance {
@@ -158,11 +160,13 @@ DEF wall-e Robot {
         boundingObject USE wheel
         physics Physics {
         }
+        linearVelocity -0.0003199372392887625 0.03849939074445201 4.278362053528492e-06
+        angularVelocity -2.566163300469056 -0.02132429463113033 -4.031619124841117e-06
       }
     }
     HingeJoint {
       jointParameters HingeJointParameters {
-        position 25592.349407895792
+        position 25592.57218682084
         axis 0 0 1
         anchor -0.06 -0.04 0.05
       }
@@ -180,8 +184,8 @@ DEF wall-e Robot {
         }
       ]
       endPoint Solid {
-        translation -0.06002723893565623 -0.040005280622793044 0.050009869648899835
-        rotation 2.122173963154948e-06 -3.8069273228680992e-06 -0.9999999999905019 4.67964875038897
+        translation -0.06002539908171084 -0.04001116831415267 0.050009869648899835
+        rotation 2.299111499910177e-06 -3.220897846182152e-06 -0.9999999999921699 4.456869825344446
         children [
           DEF wheel Shape {
             appearance PBRAppearance {
@@ -196,6 +200,8 @@ DEF wall-e Robot {
         boundingObject USE wheel
         physics Physics {
         }
+        linearVelocity -0.000319938876445794 0.038499587754625295 4.2984887472063046e-06
+        angularVelocity -2.5661633079979285 -0.021324294693665164 -4.031628845787939e-06
       }
     }
     DEF body Shape {
@@ -212,6 +218,8 @@ DEF wall-e Robot {
   }
   controller "wall-e-controller"
   supervisor TRUE
+  linearVelocity -0.00033239786962838 0.03700011250933993 -0.0022073343333636887
+  angularVelocity 0.0737376828846782 0.0014972821852239204 -0.0014154222660367403
 }
 DEF box01-floor Floor {
   name "box01-floor"

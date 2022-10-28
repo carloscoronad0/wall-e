@@ -9,7 +9,7 @@ if __name__== "__main__":
     robot = Robot()
     
     # get the time step of the current world.
-    timestep = 64
+    timestep = 24
     max_speed = 5.28
     
     left_motor = robot.getDevice('left_motor')
