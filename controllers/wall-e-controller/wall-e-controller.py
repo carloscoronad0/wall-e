@@ -9,11 +9,11 @@ if __name__== "__main__":
     robot = Robot()
     
     # get the time step of the current world.
-    timestep = 24
+    timestep = 64
     max_speed = 5.28
-    
-    left_motor = robot.getDevice('left_motor')
-    right_motor = robot.getDevice('right_motor')
+    # Engines
+    left_motor = robot.getDevice('right_motor')
+    right_motor = robot.getDevice('left_motor')
 
     left_motor.setPosition(float('inf'))
     left_motor.setVelocity(0.0)
@@ -21,14 +21,25 @@ if __name__== "__main__":
     right_motor.setPosition(float('inf'))
     right_motor.setVelocity(0.0)
     
+    # Sonars
     right_sensor = robot.getDevice('distance_sensor_r')
     left_sensor = robot.getDevice('distance_sensor_l')
     front_sensor = robot.getDevice('distance_sensor')
 
-    right_sensor.enable(200)
-    left_sensor.enable(200)
-    front_sensor.enable(200)
+    right_sensor.enable(timestep)
+    left_sensor.enable(timestep)
+    front_sensor.enable(timestep)
     
+    # LightSensor
+    right_light_sensor = robot.getDevice('light_sensor_r')
+    left_light_sensor = robot.getDevice('light_sensor_l')
+    center_light_sensor = robot.getDevice('light_sensor_c')
+    panel = robot.getDevice('panel')
+    
+    right_light_sensor.enable(timestep)
+    left_light_sensor.enable(timestep)
+    center_light_sensor.enable(timestep)
+    panel.enable(timestep)
     # You should insert a getDevice-like function in order to get the
     # instance of a device of the robot. Something like:
     #  motor = robot.getDevice('motorname')
@@ -44,8 +55,14 @@ if __name__== "__main__":
         # control velocities 
         left_motor.setVelocity(left_speed)
         right_motor.setVelocity(right_speed)
-        
+        # print distances
         print('------Distance sensor------')
         print('right:',right_sensor.getValue())
         print('left:',left_sensor.getValue())
         print('Front:',front_sensor.getValue())
+        # print Lights (lumens)
+        print('------Light Sensor---------')
+        print('right',right_light_sensor.getValue())
+        print('center',center_light_sensor.getValue())
+        print('left',left_light_sensor.getValue())
+        print('panel',panel.getValue())
