@@ -21,6 +21,14 @@ if __name__== "__main__":
     right_motor.setPosition(float('inf'))
     right_motor.setVelocity(0.0)
     
+    right_sensor = robot.getDevice('distance_sensor_r')
+    left_sensor = robot.getDevice('distance_sensor_l')
+    front_sensor = robot.getDevice('distance_sensor')
+
+    right_sensor.enable(200)
+    left_sensor.enable(200)
+    front_sensor.enable(200)
+    
     # You should insert a getDevice-like function in order to get the
     # instance of a device of the robot. Something like:
     #  motor = robot.getDevice('motorname')
@@ -30,8 +38,14 @@ if __name__== "__main__":
     # Main loop:
     # - perform simulation steps until Webots is stopping the controller
     while robot.step(timestep) != -1:
-        left_speed = 0.5 * max_speed
-        right_speed = 0.5 * max_speed
+        left_speed = -0.5 * max_speed
+        right_speed = -0.5 * max_speed
 
+        # control velocities 
         left_motor.setVelocity(left_speed)
         right_motor.setVelocity(right_speed)
+        
+        print('------Distance sensor------')
+        print('right:',right_sensor.getValue())
+        print('left:',left_sensor.getValue())
+        print('Front:',front_sensor.getValue())

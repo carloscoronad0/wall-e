@@ -10,8 +10,8 @@ WorldInfo {
   basicTimeStep 24
 }
 Viewpoint {
-  orientation 0.30263011796048006 -0.20210586185814627 -0.9314334288105628 4.254519756681663
-  position 0.500655755952699 -1.3397249794776087 0.9769234091380029
+  orientation 0.26603065584747126 -0.18546266792834287 -0.9459552256604249 4.3075902421565955
+  position 0.4965894038991413 -1.905534265532483 0.8721954446862882
 }
 TexturedBackground {
 }
@@ -19,8 +19,8 @@ TexturedBackgroundLight {
   luminosity 0
 }
 DEF wall-e Robot {
-  translation 0 0 0.1
-  rotation 0.7713379124678866 -0.4495054911306711 -0.45053594555047105 1.8289897747049368
+  translation -0.0328028 -0.0410983 0.0558048
+  rotation 0.6793843993718797 -0.5090201122601862 -0.5285218663449391 1.9679561460802681
   scale 0.5 0.5 0.5
   children [
     DistanceSensor {
@@ -42,8 +42,9 @@ DEF wall-e Robot {
       }
       lookupTable [
         0 10 0
-        10 0 0
+        1 0 0
       ]
+      type "sonar"
     }
     DistanceSensor {
       translation 0 0.01 -0.05
@@ -64,8 +65,9 @@ DEF wall-e Robot {
       }
       lookupTable [
         0 10 0
-        10 0 0
+        1 0 0
       ]
+      type "sonar"
     }
     DistanceSensor {
       translation 0.1 0.01 0
@@ -86,23 +88,24 @@ DEF wall-e Robot {
       }
       lookupTable [
         0 10 0
-        10 0 0
+        1 0 0
       ]
+      type "sonar"
     }
     BallJoint {
       jointParameters BallJointParameters {
-        position -943.5402238604139
+        position -953.3950115013909
         anchor 0.07 -0.04 0
       }
       jointParameters2 JointParameters {
-        position -529.4679347459979
+        position -532.41510578252
       }
       jointParameters3 JointParameters {
-        position 4085.305380669192
+        position 4052.294817845134
       }
       endPoint Solid {
-        translation 0.0677774658074809 -0.042909627750372 -0.0009713599680891691
-        rotation 0.44970044478999677 -0.373567340256302 -0.8113057082564571 2.7009375799266784
+        translation 0.0716406516366247 -0.043273202421160666 -0.0009713599680891683
+        rotation -0.709903517533858 0.09621406943968132 0.697696100487104 4.440762543208873
         children [
           DEF ball Shape {
             appearance PBRAppearance {
@@ -121,7 +124,7 @@ DEF wall-e Robot {
     }
     HingeJoint {
       jointParameters HingeJointParameters {
-        position 51224.09797743181
+        position 51014.04823927189
         axis 0 0 1
         anchor -0.06 -0.04 -0.05
       }
@@ -139,8 +142,8 @@ DEF wall-e Robot {
         }
       ]
       endPoint Solid {
-        translation -0.0599932183954082 -0.04004252595346717 -0.0500017252624447
-        rotation 1.0909034950765107e-06 1.4553406316700742e-06 0.999999999998346 0.8004579958747706
+        translation -0.060024141197354004 -0.0399643398055327 -0.0500017252624447
+        rotation -7.926252090688551e-07 3.584915443632182e-07 0.9999999999996217 4.379020280059369
         children [
           DEF wheel Shape {
             appearance PBRAppearance {
@@ -160,7 +163,7 @@ DEF wall-e Robot {
     }
     HingeJoint {
       jointParameters HingeJointParameters {
-        position 25677.74275421069
+        position 25467.693017689628
         axis 0 0 1
         anchor -0.06 -0.04 0.05
       }
@@ -178,8 +181,8 @@ DEF wall-e Robot {
         }
       ]
       endPoint Solid {
-        translation -0.05997992370658482 -0.0399808483150748 0.050009869648899835
-        rotation -4.720846957415477e-06 -4.800059091123297e-06 0.9999999999773365 5.315473878324739
+        translation -0.06001008493533596 -0.040025848378518504 0.050009869648899835
+        rotation 2.7522346986011752e-06 -1.7201221720271667e-06 -0.9999999999947332 3.6723328129684396
         children [
           DEF wheel Shape {
             appearance PBRAppearance {
