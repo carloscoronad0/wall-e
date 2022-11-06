@@ -7,7 +7,7 @@ import numpy as np
 from a_star import AStar
 
 robot = Robot()
-max_angular_speed = 2 #rpm
+max_angular_speed = 5 #rpm
 left_motor = robot.getDevice('right_motor')
 right_motor = robot.getDevice('left_motor')
 
@@ -17,7 +17,7 @@ TANGENTIAL_SPEED = max_angular_speed * radio_wheel
 radio_robot = 0.0505013 #dstance beetween wheels / 2
 # robot_rotational_speed = TANGENTIAL_SPEED/(2*radio_robot*math.pi)
 # robot_rotational_speed = 0.5968116402163006
-robot_rotational_speed = 0.4529
+robot_rotational_speed = 0.44
 # robot_angular_speed_in_degrees = robot_rotational_speed*360
 # robot_angular_speed_in_degrees = 214.85219047786822
 robot_angular_speed_in_degrees = robot_rotational_speed*360
@@ -41,20 +41,25 @@ def delay_function(sec):
         if (current_time_2 >= delay_time):
             break
 
-def turn_robot(angle,right_motor,left_motor):
+def turn_robot(angle):
     """
     Positive for rigth an negative to left
     """
+    if angle == 0:
+        return
+
     if angle > 0:
         left_speed = -max_angular_speed
         right_speed = max_angular_speed
+        robot_rotational_speed = 0.4529
     else:
         left_speed = max_angular_speed
         right_speed = -max_angular_speed
+        robot_rotational_speed = 0.44
 
     angle_robot = abs(angle)
     # applying formula
-    time = angle_robot/robot_angular_speed_in_degrees
+    time = angle_robot/(robot_rotational_speed*360)
     print(time)
     # control velocities 
     left_motor.setVelocity(left_speed)
@@ -107,6 +112,9 @@ if __name__== "__main__":
     # Main loop:
     # - perform simulation steps until Webots is stopping the controller
     no_obstacles_found = True
+    turn_robot(-90)
+    delay_function(0.5)
+    move_forward(0.1)
     while robot.step(timestep) != -1:
 
         # Capture values
