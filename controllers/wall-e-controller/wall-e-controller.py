@@ -6,17 +6,62 @@ from controller import Robot
 import numpy as np
 from a_star import AStar
 
+robot = Robot()
+max_angular_speed = 5 #rpm
+left_motor = robot.getDevice('right_motor')
+right_motor = robot.getDevice('left_motor')
+
+radio_wheel = 0.03
+TANGENTIAL_SPEED = max_angular_speed*radio_wheel
+
+# Functions
+def turn_robot(angle,right_motor,left_motor):
+    """
+    **vel**: velocity of robot 
+    Positive for rigth an negative to left
+    """
+    if angle > 0:
+        left_speed = -max_angular_speed
+        right_speed = max_angular_speed
+    else:
+        left_speed = max_angular_speed
+        right_speed = -max_angular_speed
+
+    angle_robot = angle
+    radio_robot = 0.0400013
+    # applying formula
+    time = abs(angle_robot)
+    print(angle_wheel)
+    # control velocities 
+    left_motor.setVelocity(left_speed)
+    right_motor.setVelocity(right_speed)
+    delay_function(time)
+    left_motor.setVelocity(0)
+    right_motor.setVelocity(0)
+
+def move_forward(distance):
+    time = distance / TANGENTIAL_SPEED
+
+    left_motor.setVelocity(-max_angular_speed)
+    right_motor.setVelocity(-max_angular_speed)
+    delay_function(time)
+    left_motor.setVelocity(0)
+    right_motor.setVelocity(0)
+
+def delay_function(sec):
+    current_time_1 = float(robot.getTime())
+
+    delay_time = current_time_1 + 2
+    while True:
+        current_time_2 = float(robot.getTime())
+        robot.step(1);
+        if (current_time_2 >= delay_time):
+            break
+# Main
 if __name__== "__main__":
-    # create the Robot instance.
-    robot = Robot()
 
-    # get the time step of the current world.
-    timestep = 64
-    max_speed = 5
+    timestep = int(robot.getBasicTimeStep())
     # Engines
-    left_motor = robot.getDevice('right_motor')
-    right_motor = robot.getDevice('left_motor')
-
     left_motor.setPosition(float('inf'))
     left_motor.setVelocity(0.0)
 
@@ -60,13 +105,8 @@ if __name__== "__main__":
 
     # Main loop:
     # - perform simulation steps until Webots is stopping the controller
+    move_forward(0.02)
     while robot.step(timestep) != -1:
-        left_speed = -0.5 * max_speed
-        right_speed = -0.5 * max_speed
-
-        # control velocities
-        left_motor.setVelocity(left_speed)
-        right_motor.setVelocity(right_speed)
 
         ds_right_value = right_sensor.getValue()
         ds_left_value = left_sensor.getValue()
