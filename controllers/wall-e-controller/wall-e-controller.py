@@ -14,6 +14,13 @@ right_motor = robot.getDevice('left_motor')
 radio_wheel = 0.03
 TANGENTIAL_SPEED = max_angular_speed * radio_wheel
 
+radio_robot = 0.0505013 #dstance beetween wheels / 2
+# robot_rotational_speed = TANGENTIAL_SPEED/(2*radio_robot*math.pi)
+# robot_rotational_speed = 0.5968116402163006
+robot_rotational_speed = 0.4529
+# robot_angular_speed_in_degrees = robot_rotational_speed*360
+# robot_angular_speed_in_degrees = 214.85219047786822
+robot_angular_speed_in_degrees = robot_rotational_speed*360
 # Functions
 def move_forward(distance):
     time = distance / TANGENTIAL_SPEED
@@ -36,7 +43,6 @@ def delay_function(sec):
 
 def turn_robot(angle,right_motor,left_motor):
     """
-    **vel**: velocity of robot
     Positive for rigth an negative to left
     """
     if angle > 0:
@@ -46,11 +52,11 @@ def turn_robot(angle,right_motor,left_motor):
         left_speed = max_angular_speed
         right_speed = -max_angular_speed
 
-    angle_robot = angle
-    radio_robot = 0.0400013
+    angle_robot = abs(angle)
     # applying formula
-    time = abs(angle_robot)
-    # control velocities
+    time = angle_robot/robot_angular_speed_in_degrees
+    print(time)
+    # control velocities 
     left_motor.setVelocity(left_speed)
     right_motor.setVelocity(right_speed)
     delay_function(time)
