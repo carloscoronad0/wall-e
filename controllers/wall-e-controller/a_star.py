@@ -134,3 +134,7 @@ class AStar:
             return []
         else:
             return get_optimal_path()
+
+    def clean_dictionaries(self):
+        self.unvisited_dict.clear()
+        self.visited_dict.clear()

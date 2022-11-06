@@ -7,17 +7,36 @@ import numpy as np
 from a_star import AStar
 
 robot = Robot()
-max_angular_speed = 5 #rpm
+max_angular_speed = 2 #rpm
 left_motor = robot.getDevice('right_motor')
 right_motor = robot.getDevice('left_motor')
 
 radio_wheel = 0.03
-TANGENTIAL_SPEED = max_angular_speed*radio_wheel
+TANGENTIAL_SPEED = max_angular_speed * radio_wheel
 
 # Functions
+def move_forward(distance):
+    time = distance / TANGENTIAL_SPEED
+
+    left_motor.setVelocity(-max_angular_speed)
+    right_motor.setVelocity(-max_angular_speed)
+    delay_function(time)
+    left_motor.setVelocity(0)
+    right_motor.setVelocity(0)
+
+def delay_function(sec):
+    current_time_1 = float(robot.getTime())
+
+    delay_time = current_time_1 + sec
+    while True:
+        current_time_2 = float(robot.getTime())
+        robot.step(1);
+        if (current_time_2 >= delay_time):
+            break
+
 def turn_robot(angle,right_motor,left_motor):
     """
-    **vel**: velocity of robot 
+    **vel**: velocity of robot
     Positive for rigth an negative to left
     """
     if angle > 0:
@@ -31,32 +50,13 @@ def turn_robot(angle,right_motor,left_motor):
     radio_robot = 0.0400013
     # applying formula
     time = abs(angle_robot)
-    print(angle_wheel)
-    # control velocities 
+    # control velocities
     left_motor.setVelocity(left_speed)
     right_motor.setVelocity(right_speed)
     delay_function(time)
     left_motor.setVelocity(0)
     right_motor.setVelocity(0)
 
-def move_forward(distance):
-    time = distance / TANGENTIAL_SPEED
-
-    left_motor.setVelocity(-max_angular_speed)
-    right_motor.setVelocity(-max_angular_speed)
-    delay_function(time)
-    left_motor.setVelocity(0)
-    right_motor.setVelocity(0)
-
-def delay_function(sec):
-    current_time_1 = float(robot.getTime())
-
-    delay_time = current_time_1 + 2
-    while True:
-        current_time_2 = float(robot.getTime())
-        robot.step(1);
-        if (current_time_2 >= delay_time):
-            break
 # Main
 if __name__== "__main__":
 
@@ -87,18 +87,13 @@ if __name__== "__main__":
     left_light_sensor.enable(timestep)
     center_light_sensor.enable(timestep)
     panel.enable(timestep)
-    # You should insert a getDevice-like function in order to get the
-    # instance of a device of the robot. Something like:
-    #  motor = robot.getDevice('motorname')
-    #  ds = robot.getDevice('dsname')
-    #  ds.enable(timestep)
 
-    # AStar Algorithm
+    # AStar Algorithm variables
     GRID_WIDTH = 116
     GRID_HEIGHT = 39
 
     initial_node = (6,20)
-    final_node = (115, 20)
+    final_node = (110, 20)
 
     a_star = AStar()
     grid = np.zeros([GRID_WIDTH, GRID_HEIGHT])
@@ -106,8 +101,10 @@ if __name__== "__main__":
     # Main loop:
     # - perform simulation steps until Webots is stopping the controller
     move_forward(0.02)
+    no_obstacles_found = True
     while robot.step(timestep) != -1:
 
+        # Capture values
         ds_right_value = right_sensor.getValue()
         ds_left_value = left_sensor.getValue()
         ds_front_value = front_sensor.getValue()
@@ -117,28 +114,54 @@ if __name__== "__main__":
         ls_left_value = left_light_sensor.getValue()
         ls_center_value = center_light_sensor.getValue()
 
+        #
+
         # Analyzing data from distance sensors
         if ds_front_value > 9.25:
             print("Wall In Front: ", ds_front_value)
-            grid[initial_node[0] + 2, initial_node[1]] = -1
+            if grid[initial_node[0] + 2, initial_node[1]] == 0:
+                grid[initial_node[0] + 2, initial_node[1]] = -1
+                no_obstacles_found = False
 
         if ds_right_value > 9.25:
             print("Wall Right: ", ds_right_value)
-            grid[initial_node[0], initial_node[1] + 2] = -1
+            if grid[initial_node[0], initial_node[1] + 2] == 0:
+                grid[initial_node[0], initial_node[1] + 2] = -1
+                no_obstacles_found = False
 
         if ds_left_value > 9.25:
             print("Wall Left: ", ds_left_value)
-            grid[initial_node[0], initial_node[1] - 2] = -1
+            if grid[initial_node[0], initial_node[1] - 2] == 0:
+                grid[initial_node[0], initial_node[1] - 2] = -1
+                no_obstacles_found = False
 
         # Analyzing data from light sensors
         if ls_center_value == 10:
             print("Light in front: ", ls_center_value)
-            grid[initial_node[0] + 2, initial_node[1]] = -1
+            if grid[initial_node[0] + 2, initial_node[1]] == 0:
+                grid[initial_node[0] + 2, initial_node[1]] = -1
+                no_obstacles_found = False
 
         if ls_right_value == 10:
             print("Light right: ", ls_right_value)
-            grid[initial_node[0], initial_node[1] + 2] = -1
+            if grid[initial_node[0], initial_node[1] + 2] == 0:
+                grid[initial_node[0], initial_node[1] + 2] = -1
+                no_obstacles_found = False
 
         if ls_left_value == 10:
             print("Light Left: ", ls_left_value)
-            grid[initial_node[0], initial_node[1] - 2] = -1
+            if grid[initial_node[0], initial_node[1] - 2] == 0:
+                grid[initial_node[0], initial_node[1] - 2] = -1
+                no_obstacles_found = False
+
+
+        if no_obstacles_found:
+            move_forward(0.02)
+            initial_node = (initial_node[0] + 1, initial_node[1])
+            print("Moving,no obstacles!!, Initial Node: ", initial_node)
+        else:
+            a_star.clean_dictionaries()
+            path = a_star.search_for_optimal_path(initial_node, final_node, grid)
+            no_obstacles_found = True
+            print(grid.shape)
+            print(path)
