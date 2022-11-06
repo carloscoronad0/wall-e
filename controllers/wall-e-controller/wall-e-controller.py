@@ -100,7 +100,6 @@ if __name__== "__main__":
 
     # Main loop:
     # - perform simulation steps until Webots is stopping the controller
-    move_forward(0.02)
     no_obstacles_found = True
     while robot.step(timestep) != -1:
 
@@ -114,46 +113,62 @@ if __name__== "__main__":
         ls_left_value = left_light_sensor.getValue()
         ls_center_value = center_light_sensor.getValue()
 
-        #
-
         # Analyzing data from distance sensors
         if ds_front_value > 9.25:
             print("Wall In Front: ", ds_front_value)
-            if grid[initial_node[0] + 2, initial_node[1]] == 0:
-                grid[initial_node[0] + 2, initial_node[1]] = -1
-                no_obstacles_found = False
+            if initial_node[0] + 2 <= GRID_WIDTH:
+                if grid[initial_node[0] + 2, initial_node[1]] == 0:
+                    grid[initial_node[0] + 2, initial_node[1]] = -1
+                    no_obstacles_found = False
 
         if ds_right_value > 9.25:
             print("Wall Right: ", ds_right_value)
-            if grid[initial_node[0], initial_node[1] + 2] == 0:
-                grid[initial_node[0], initial_node[1] + 2] = -1
-                no_obstacles_found = False
+            if initial_node[0] + 2 <= GRID_WIDTH and initial_node[1] + 1 <= GRID_HEIGHT:
+                if grid[initial_node[0] + 2, initial_node[1] + 1] == 0:
+                    grid[initial_node[0] + 2, initial_node[1] + 1] = -1
+                    no_obstacles_found = False
 
         if ds_left_value > 9.25:
             print("Wall Left: ", ds_left_value)
-            if grid[initial_node[0], initial_node[1] - 2] == 0:
-                grid[initial_node[0], initial_node[1] - 2] = -1
-                no_obstacles_found = False
+            if initial_node[0] + 2 <= GRID_WIDTH and initial_node[1] - 1 >= 0:
+                if grid[initial_node[0] + 2, initial_node[1] - 1] == 0:
+                    grid[initial_node[0] + 2, initial_node[1] - 1] = -1
+                    no_obstacles_found = False
+
 
         # Analyzing data from light sensors
         if ls_center_value == 10:
             print("Light in front: ", ls_center_value)
-            if grid[initial_node[0] + 2, initial_node[1]] == 0:
-                grid[initial_node[0] + 2, initial_node[1]] = -1
-                no_obstacles_found = False
+            if initial_node[0] + 3 <= GRID_WIDTH and initial_node[1] - 1 >= 0 and initial_node[1] + 1 <= GRID_HEIGHT:
+                if grid[initial_node[0] + 2, initial_node[1]] == 0:
+                    grid[initial_node[0] + 2, initial_node[1]] = -2
+                    grid[initial_node[0] + 2, initial_node[1] - 1] = -1
+                    grid[initial_node[0] + 2, initial_node[1] + 1] = -1
+                    grid[initial_node[0] + 1, initial_node[1]] = -1
+                    grid[initial_node[0] + 3, initial_node[1]] = -1
+                    no_obstacles_found = False
 
         if ls_right_value == 10:
             print("Light right: ", ls_right_value)
-            if grid[initial_node[0], initial_node[1] + 2] == 0:
-                grid[initial_node[0], initial_node[1] + 2] = -1
-                no_obstacles_found = False
+            if initial_node[0] + 3 <= GRID_WIDTH and initial_node[1] + 2 <= GRID_HEIGHT:
+                if grid[initial_node[0] + 2, initial_node[1] + 1] == 0:
+                    grid[initial_node[0] + 2, initial_node[1] + 1] = -2
+                    grid[initial_node[0] + 2, initial_node[1]] = -1
+                    grid[initial_node[0] + 2, initial_node[1] + 2] = -1
+                    grid[initial_node[0] + 1, initial_node[1] + 1] = -1
+                    grid[initial_node[0] + 3, initial_node[1] + 1] = -1
+                    no_obstacles_found = False
 
         if ls_left_value == 10:
             print("Light Left: ", ls_left_value)
-            if grid[initial_node[0], initial_node[1] - 2] == 0:
-                grid[initial_node[0], initial_node[1] - 2] = -1
-                no_obstacles_found = False
-
+            if initial_node[0] + 3 <= GRID_WIDTH and initial_node[1] - 2 >= 0:
+                if grid[initial_node[0] + 2, initial_node[1] - 1] == 0:
+                    grid[initial_node[0] + 2, initial_node[1] - 1] = -2
+                    grid[initial_node[0] + 2, initial_node[1] - 2] = -1
+                    grid[initial_node[0] + 2, initial_node[1]] = -1
+                    grid[initial_node[0] + 1, initial_node[1] - 1] = -1
+                    grid[initial_node[0] + 3, initial_node[1] - 1] = -1
+                    no_obstacles_found = False
 
         if no_obstacles_found:
             move_forward(0.02)
@@ -162,6 +177,16 @@ if __name__== "__main__":
         else:
             a_star.clean_dictionaries()
             path = a_star.search_for_optimal_path(initial_node, final_node, grid)
-            no_obstacles_found = True
-            print(grid.shape)
-            print(path)
+            next_node = path[-2]
+
+            # Compare to move
+            if initial_node[0] - next_node[0] == 0:
+                if initial_node[1] - next_node[1] > 0:
+                    print("Move up (y - 1)")
+                else:
+                    print("Move down (y + 1)")
+            else:
+                print("Move Forward")
+                move_forward(0.02)
+            # no_obstacles_found = True
+            break
