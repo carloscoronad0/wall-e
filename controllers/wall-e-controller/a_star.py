@@ -46,13 +46,13 @@ class AStar:
 
         neighbors.extend([(x_pos + step, y_pos)
                           for step in [-1,1]
-                          if (x_pos + step >= 0) 
+                          if (x_pos + step >= 0)
                           and (x_pos + step < map_width)
                           and (grid[x_pos + step][y_pos] >= filter_reference)])
 
         neighbors.extend([(x_pos, y_pos + step)
                           for step in [-1,1]
-                          if (y_pos + step >= 0) 
+                          if (y_pos + step >= 0)
                           and (y_pos + step < map_long)
                           and (grid[x_pos][y_pos + 1] >= filter_reference)])
 
