@@ -188,28 +188,32 @@ if __name__== "__main__":
         else:
             a_star.clean_dictionaries()
             path = a_star.search_for_optimal_path(initial_node, final_node, grid)
-            next_node = path[-2]
-
-            if next_node == final_node:
-                print("Goal Node Reached!")
+            if(len(path) == 0):
+                print("No optimal path found")
             else:
-                # Compare to move
-                if initial_node[0] - next_node[0] == 0:
-                    if initial_node[1] - next_node[1] > 0:
-                        turn_robot(90)
-                        delay_function(0.5)
-                        move_forward(0.02)
-                        delay_function(0.5)
-                        turn_robot(-90)
-                        print("Move up (y - 1)")
-                    else:
-                        turn_robot(-90)
-                        delay_function(0.5)
-                        move_forward(0.02)
-                        delay_function(0.5)
-                        turn_robot(90)
-                        print("Move down (y + 1)")
+                next_node = path[-2]
+
+                if next_node == final_node:
+                    print("Goal Node Reached!")
+                    break
                 else:
-                    print("Move Forward")
-                    move_forward(0.02)
-                no_obstacles_found = True
+                    # Compare to move
+                    if initial_node[0] - next_node[0] == 0:
+                        if initial_node[1] - next_node[1] > 0:
+                            turn_robot(90)
+                            delay_function(0.5)
+                            move_forward(0.02)
+                            delay_function(0.5)
+                            turn_robot(-90)
+                            print("Move up (y - 1)")
+                        else:
+                            turn_robot(-90)
+                            delay_function(0.5)
+                            move_forward(0.02)
+                            delay_function(0.5)
+                            turn_robot(90)
+                            print("Move down (y + 1)")
+                    else:
+                        print("Move Forward")
+                        move_forward(0.02)
+                    no_obstacles_found = True
