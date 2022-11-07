@@ -1,22 +1,27 @@
-char grid[19][58];
+#include "a_star.h"
+
+char res;
+int res_as_int;
+
+char x = 19;
+char y = 58;
+AStarGrid test(&x, &y);
 
 void setup() {
-  Serial.begin(9600);  
+  Serial.begin(9600);
 }
 
 void loop()
 {
-  int x_pos = random(0, 42);
-  int y_pos = random(0,115);
+  point p_test_1;
+  p_test_1.pos_x = 10;
+  p_test_1.pos_y = 0;
 
-  grid[x_pos][y_pos] = 'A';
+  point p_test_2;
+  p_test_2.pos_x = 2;
+  p_test_2.pos_y = 57;
 
-  for (int i = 0; i < 19; i++){
-    for (int j = 0; j < 58; j++){
-      Serial.print(grid[i][j]);
-    }
-    Serial.print("\n");
-  }  
-  
+  res = test.calculateFScore(&p_test_1, &p_test_2);
+  Serial.println(res, BIN);
   delay(1000); 
 }
