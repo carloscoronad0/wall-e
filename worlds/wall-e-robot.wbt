@@ -19,8 +19,8 @@ TexturedBackgroundLight {
   luminosity 0
 }
 DEF wall-e Robot {
-  translation 0 0.22 0.0681528
-  rotation 0.590915467681378 -0.5630509289617265 -0.5777478355218952 2.0953617693948274
+  translation 0 0.22 0.0707665
+  rotation 0.5827679095566829 -0.5799118369321808 -0.5692836068049717 2.0698844343502762
   children [
     LightSensor {
       translation 4.03236e-13 0.04 0
@@ -187,18 +187,18 @@ DEF wall-e Robot {
     }
     BallJoint {
       jointParameters BallJointParameters {
-        position -958.9669925650464
+        position -958.3502620561283
         anchor 0.07 -0.04 0
       }
       jointParameters2 JointParameters {
-        position -548.0499497873378
+        position -548.5523458507724
       }
       jointParameters3 JointParameters {
-        position 4031.9301521831153
+        position 4031.7649844006214
       }
       endPoint Solid {
-        translation 0.07325860271333097 -0.041575750069604456 0.0014986302679728402
-        rotation -0.5950958313503725 -0.20630724985011692 -0.7767227756211933 1.1110569140366773
+        translation 0.07361959426549902 -0.03999584327616979 0.0014986302679728392
+        rotation -0.7173082859203361 -0.44921121458376995 -0.5326144080309915 0.8066414825924015
         children [
           DEF ball Shape {
             appearance PBRAppearance {
@@ -217,7 +217,7 @@ DEF wall-e Robot {
     }
     HingeJoint {
       jointParameters HingeJointParameters {
-        position 50808.306816888406
+        position 50794.76985743329
         axis 0 0 1
         anchor -0.06 -0.04 -0.05
       }
@@ -235,8 +235,8 @@ DEF wall-e Robot {
         }
       ]
       endPoint Solid {
-        translation -0.06003394921644417 -0.04002613387779458 -0.05000184065243736
-        rotation 3.431382878824356e-06 -1.958478579145728e-05 0.9999999998023308 5.985342164944739
+        translation -0.06004074114069433 -0.03998674525290019 -0.05000184065243736
+        rotation -1.5275474413906218e-06 -4.738539591301535e-06 0.9999999999876064 5.014753324234367
         children [
           DEF wheel Shape {
             appearance PBRAppearance {
@@ -256,7 +256,7 @@ DEF wall-e Robot {
     }
     HingeJoint {
       jointParameters HingeJointParameters {
-        position 25261.951519395247
+        position 25248.41455912857
         axis 0 0 1
         anchor -0.06 -0.04 0.05
       }
@@ -274,8 +274,8 @@ DEF wall-e Robot {
         }
       ]
       endPoint Solid {
-        translation -0.059972444021278826 -0.040009046223367074 0.05001002093556352
-        rotation -2.9444612649652354e-07 -1.784050328429066e-06 0.9999999999983653 4.217098468256955
+        translation -0.05999190113846406 -0.040027849139345956 0.05001002093556352
+        rotation -9.397307352009817e-07 -1.239074710182617e-06 0.9999999999987909 3.2465088159414064
         children [
           DEF wheel Shape {
             appearance PBRAppearance {

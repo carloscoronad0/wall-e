@@ -61,7 +61,7 @@ def turn_robot(angle):
     # applying formula
     time = angle_robot/(robot_rotational_speed*360)
     print(time)
-    # control velocities 
+    # control velocities
     left_motor.setVelocity(left_speed)
     right_motor.setVelocity(right_speed)
     delay_function(time)
@@ -112,9 +112,6 @@ if __name__== "__main__":
     # Main loop:
     # - perform simulation steps until Webots is stopping the controller
     no_obstacles_found = True
-    turn_robot(-90)
-    delay_function(0.5)
-    move_forward(0.1)
     while robot.step(timestep) != -1:
 
         # Capture values
@@ -130,21 +127,21 @@ if __name__== "__main__":
         # Analyzing data from distance sensors
         if ds_front_value > 9.25:
             print("Wall In Front: ", ds_front_value)
-            if initial_node[0] + 2 <= GRID_WIDTH:
+            if initial_node[0] + 2 < GRID_WIDTH:
                 if grid[initial_node[0] + 2, initial_node[1]] == 0:
                     grid[initial_node[0] + 2, initial_node[1]] = -1
                     no_obstacles_found = False
 
         if ds_right_value > 9.25:
             print("Wall Right: ", ds_right_value)
-            if initial_node[0] + 2 <= GRID_WIDTH and initial_node[1] + 1 <= GRID_HEIGHT:
+            if initial_node[0] + 2 < GRID_WIDTH and initial_node[1] + 1 < GRID_HEIGHT:
                 if grid[initial_node[0] + 2, initial_node[1] + 1] == 0:
                     grid[initial_node[0] + 2, initial_node[1] + 1] = -1
                     no_obstacles_found = False
 
         if ds_left_value > 9.25:
             print("Wall Left: ", ds_left_value)
-            if initial_node[0] + 2 <= GRID_WIDTH and initial_node[1] - 1 >= 0:
+            if initial_node[0] + 2 < GRID_WIDTH and initial_node[1] - 1 >= 0:
                 if grid[initial_node[0] + 2, initial_node[1] - 1] == 0:
                     grid[initial_node[0] + 2, initial_node[1] - 1] = -1
                     no_obstacles_found = False
@@ -153,7 +150,7 @@ if __name__== "__main__":
         # Analyzing data from light sensors
         if ls_center_value == 10:
             print("Light in front: ", ls_center_value)
-            if initial_node[0] + 3 <= GRID_WIDTH and initial_node[1] - 1 >= 0 and initial_node[1] + 1 <= GRID_HEIGHT:
+            if initial_node[0] + 3 < GRID_WIDTH and initial_node[1] - 1 >= 0 and initial_node[1] + 1 < GRID_HEIGHT:
                 if grid[initial_node[0] + 2, initial_node[1]] == 0:
                     grid[initial_node[0] + 2, initial_node[1]] = -2
                     grid[initial_node[0] + 2, initial_node[1] - 1] = -1
@@ -164,7 +161,7 @@ if __name__== "__main__":
 
         if ls_right_value == 10:
             print("Light right: ", ls_right_value)
-            if initial_node[0] + 3 <= GRID_WIDTH and initial_node[1] + 2 <= GRID_HEIGHT:
+            if initial_node[0] + 3 < GRID_WIDTH and initial_node[1] + 2 < GRID_HEIGHT:
                 if grid[initial_node[0] + 2, initial_node[1] + 1] == 0:
                     grid[initial_node[0] + 2, initial_node[1] + 1] = -2
                     grid[initial_node[0] + 2, initial_node[1]] = -1
@@ -175,7 +172,7 @@ if __name__== "__main__":
 
         if ls_left_value == 10:
             print("Light Left: ", ls_left_value)
-            if initial_node[0] + 3 <= GRID_WIDTH and initial_node[1] - 2 >= 0:
+            if initial_node[0] + 3 < GRID_WIDTH and initial_node[1] - 2 >= 0:
                 if grid[initial_node[0] + 2, initial_node[1] - 1] == 0:
                     grid[initial_node[0] + 2, initial_node[1] - 1] = -2
                     grid[initial_node[0] + 2, initial_node[1] - 2] = -1
@@ -193,14 +190,26 @@ if __name__== "__main__":
             path = a_star.search_for_optimal_path(initial_node, final_node, grid)
             next_node = path[-2]
 
-            # Compare to move
-            if initial_node[0] - next_node[0] == 0:
-                if initial_node[1] - next_node[1] > 0:
-                    print("Move up (y - 1)")
-                else:
-                    print("Move down (y + 1)")
+            if next_node == final_node:
+                print("Goal Node Reached!")
             else:
-                print("Move Forward")
-                move_forward(0.02)
-            # no_obstacles_found = True
-            break
+                # Compare to move
+                if initial_node[0] - next_node[0] == 0:
+                    if initial_node[1] - next_node[1] > 0:
+                        turn_robot(90)
+                        delay_function(0.5)
+                        move_forward(0.02)
+                        delay_function(0.5)
+                        turn_robot(-90)
+                        print("Move up (y - 1)")
+                    else:
+                        turn_robot(-90)
+                        delay_function(0.5)
+                        move_forward(0.02)
+                        delay_function(0.5)
+                        turn_robot(90)
+                        print("Move down (y + 1)")
+                else:
+                    print("Move Forward")
+                    move_forward(0.02)
+                no_obstacles_found = True
