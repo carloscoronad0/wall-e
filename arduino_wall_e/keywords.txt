@@ -1,4 +1,4 @@
-Point   KEYWORD1
+point   KEYWORD1
 NodeGrid    KEYWORD1
 getPosX KEYWORD2
 getPosY KEYWORD2
