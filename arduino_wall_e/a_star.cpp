@@ -1,48 +1,30 @@
-#include "HardwareSerial.h"
-#include <ArduinoQueue.h>
-#include <LinkedList.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdint.h>
-#include "Arduino.h"
 #include "a_star.h"
 
-// Each bit represents a cell
-// Number of possible cells => ROW * GRID_DIV * GRID_DIV_SCALE
-// Memory usage: ROW * GRID_DIV * 2B (16 bits)
-uint16_t grid [ROW][GRID_DIV];
-LinkedList<gridnode> unvisited = LinkedList<gridnode>();
-LinkedList<gridnode> visited = LinkedList<gridnode>();
+AStar::AStar(){}
 
-// GRID SECTION --------------------------------------------
-//---------------------------------------------------------
-void initGrid()
-{
+void AStar::initGrid(){
   for (uint8_t i=0; i<ROW; i++)
   {
     for (uint8_t j=0; j<GRID_DIV; j++)
     {
       grid[i][j]=0;
     }
-  }
+  }  
 }
 
-bool isObstacleCell(uint8_t i, uint8_t j)
-{
+bool AStar::isObstacleCell(uint8_t i, uint8_t j){
   uint8_t inGridDiv = floor(j / GRID_DIV_SCALE);
   uint8_t posInDiv = j % GRID_DIV_SCALE;
   return grid[i][inGridDiv] & (1<<(posInDiv));
 }
 
-void addObstacleCell(uint8_t i, uint8_t j)
-{
+void AStar::addObstacleCell(uint8_t i, uint8_t j){
   uint8_t inGridDiv = floor(j / GRID_DIV_SCALE);
   uint8_t posInDiv = j % GRID_DIV_SCALE;
   grid[i][inGridDiv] |= (1<<posInDiv);
 }
 
-void printGridOnSerial()
-{
+void AStar::printGridOnSerial(){
   for (int8_t i=0; i<ROW; i++)
   {
     for (int8_t j=(GRID_DIV-1); j>=0; j--){
@@ -52,12 +34,11 @@ void printGridOnSerial()
       Serial.print(" ");
     }
     Serial.println();
-  }
+  }  
 }
 
 // No introducir nodos (posiciones registradas en UNVISITED y VISITED) repetidas a UNVISITED
-point* getNodeNeighbors(gridnode* node)
-{
+point* AStar::getNodeNeighbors(gridnode *node){
   point neighborPositions[4];
   neighborPositions[0] = {.pos_x = node->pos.pos_x, .pos_y = node->pos.pos_y + 1};
   neighborPositions[1] = {.pos_x = node->pos.pos_x, .pos_y = node->pos.pos_y - 1};
@@ -67,9 +48,8 @@ point* getNodeNeighbors(gridnode* node)
   return neighborPositions;
 }
 
-
 //Create elements for unvisited list
-LinkedList<gridnode> createUnvisitedElements(){
+LinkedList<gridnode> AStar::createUnvisitedElements(){
   point p1;
   p1.pos_x = 2;
   p1.pos_y = 57;
@@ -108,19 +88,19 @@ LinkedList<gridnode> createUnvisitedElements(){
   return unvisited;
 }
 
-gridnode getLowestFScore(){
+gridnode AStar::getLowestFScore(){
   unvisited.sort(compare);
-  return unvisited.get(0);
+  return unvisited.get(0);  
 }
 
-LinkedList<gridnode> unvisitedToVisited(){
+LinkedList<gridnode> AStar::unvisitedToVisited(){
   // Always return the first element of unvisited node
   gridnode node = unvisited.shift();
   visited.add(node);
   return visited;  
 }
 
-int compare(gridnode *a, gridnode*b){
+static int AStar::compare(gridnode *a, gridnode *b){
   if (a->f_score >= b->f_score){
     return 1;
   }else{
