@@ -23,7 +23,7 @@ struct point {
 struct gridnode {
   point pos;
   uint8_t f_score;
-  gridnode* father;
+  point father;
 };
 
 // class AStarGrid
@@ -45,5 +45,9 @@ void initGrid();
 bool isObstacleCell(uint8_t i, uint8_t j);
 void addObstacleCell(uint8_t i, uint8_t j);
 void printGridOnSerial();
+LinkedList<gridnode> createUnvisitedElements();
+gridnode getLowestFScore();
+LinkedList<gridnode> unvisitedToVisited();
+int compare(gridnode *a, gridnode*b);
 
 #endif
