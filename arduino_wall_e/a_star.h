@@ -34,8 +34,12 @@ class AStar
     LinkedList<gridnode> createUnvisitedElements();
     gridnode getLowestFScore();
     LinkedList<gridnode> unvisitedToVisited();
-    point* getNodeNeighbors(gridnode* node);
+    void getNodeNeighbors(gridnode* node, point (*pArray)[4]);
     static int compare(gridnode *a, gridnode*b);
+    uint8_t euclideanDistance(point* p1, point* p2);
+    void registerNodeNeighbors(point* start, point* finish, gridnode* node);
+    bool isPresentOnUnvisited(point* nodePos);
+    bool isNeighborInsideGridMargins(gridnode* node, point* neighbor);
   private:
     uint16_t grid [ROW][GRID_DIV];
     LinkedList<gridnode> unvisited = LinkedList<gridnode>();

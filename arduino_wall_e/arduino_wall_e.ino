@@ -6,9 +6,16 @@
 // LinkedList<gridnode> v;
 // gridnode gn;
 AStar a_star;
+point start = {.pos_x=4, .pos_y=0};
+point finish = {.pos_x=8, .pos_y=30};
+gridnode testNode;
 
 void setup() {
   // a_star.initGrid();
+  testNode.f_score = 40;
+  testNode.pos = {.pos_x=0, .pos_y=10};
+  testNode.father = {.pos_x=7, .pos_y=9};
+
   Serial.begin(9600);
   Serial.println("------------------------------------------");
 
@@ -18,6 +25,9 @@ void setup() {
   // Serial.println(gn.f_score);
   // v = a_star.unvisitedToVisited();
   // Serial.println(v.get(0).f_score);
+
+  a_star.registerNodeNeighbors(&start, &finish, &testNode);
+  a_star.registerNodeNeighbors(&start, &finish, &testNode);
 }
 
 void loop()

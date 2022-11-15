@@ -1,5 +1,12 @@
 point   KEYWORD1
-NodeGrid    KEYWORD1
-getPosX KEYWORD2
-getPosY KEYWORD2
-registerObstacleOnGrid KEYWORD2
+gridnode    KEYWORD1
+AStart  KEYWORD1
+initGrid KEYWORD2
+isObstacleCell KEYWORD2
+addObstacleCell KEYWORD2
+printGridOnSerial KEYWORD2
+createUnvisitedElements KEYWORD2
+getLowestFScore KEYWORD2
+unvisitedToVisited KEYWORD2
+getNodeNeighbors KEYWORD2
+compare KEYWORD2

@@ -38,14 +38,16 @@ void AStar::printGridOnSerial(){
 }
 
 // No introducir nodos (posiciones registradas en UNVISITED y VISITED) repetidas a UNVISITED
-point* AStar::getNodeNeighbors(gridnode *node){
-  point neighborPositions[4];
-  neighborPositions[0] = {.pos_x = node->pos.pos_x, .pos_y = node->pos.pos_y + 1};
-  neighborPositions[1] = {.pos_x = node->pos.pos_x, .pos_y = node->pos.pos_y - 1};
-  neighborPositions[2] = {.pos_x = node->pos.pos_x + 1, .pos_y = node->pos.pos_y};
-  neighborPositions[3] = {.pos_x = node->pos.pos_x - 1, .pos_y = node->pos.pos_y};
+void AStar::getNodeNeighbors(gridnode *node, point (*pArray)[4]){
+  point p0 = {.pos_x = node->pos.pos_x, .pos_y = node->pos.pos_y + 1};
+  point p1 = {.pos_x = node->pos.pos_x, .pos_y = node->pos.pos_y - 1};
+  point p2 = {.pos_x = node->pos.pos_x + 1, .pos_y = node->pos.pos_y};
+  point p3 = {.pos_x = node->pos.pos_x - 1, .pos_y = node->pos.pos_y};
 
-  return neighborPositions;
+  (*pArray)[0] = p0;
+  (*pArray)[1] = p1;
+  (*pArray)[2] = p2;
+  (*pArray)[3] = p3;
 }
 
 //Create elements for unvisited list
@@ -105,5 +107,63 @@ static int AStar::compare(gridnode *a, gridnode *b){
     return 1;
   }else{
     return 0;
+  }
+}
+
+uint8_t AStar::euclideanDistance(point *p1, point *p2)
+{
+  uint8_t a = pow((p1->pos_x) - (p2->pos_x), 2);
+  uint8_t b = pow((p1->pos_y) - (p2->pos_y), 2);
+
+  uint8_t res = round(sqrt(a + b));
+
+  return res;
+}
+
+bool AStar::isPresentOnUnvisited(point* nodePos)
+{
+  for (uint16_t i=0; i<this->unvisited.size(); i++)
+  {
+    gridnode auxNode = unvisited.get(i);
+    if ((auxNode.pos.pos_x == nodePos->pos_x) && (auxNode.pos.pos_y == nodePos->pos_y))
+    {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+bool AStar::isNeighborInsideGridMargins(gridnode* node, point* neighbor)
+{
+  uint8_t x_difference = abs(node->pos.pos_x - neighbor->pos_x);
+  uint8_t y_difference = abs(node->pos.pos_y - neighbor->pos_y);
+
+  return (x_difference == 1 && y_difference == 0) || (x_difference == 0 && y_difference == 1);
+}
+
+void AStar::registerNodeNeighbors(point* start, point* finish, gridnode* node)
+{
+  point neighborPositions[4] = {};
+  this->getNodeNeighbors(node, &neighborPositions);
+
+  for (uint8_t i=0; i<4; i++)
+  {
+    if (this->isNeighborInsideGridMargins(node, &neighborPositions[i]))
+    {
+      if (!this->isObstacleCell(neighborPositions[i].pos_x, neighborPositions[i].pos_y)
+        && !this->isPresentOnUnvisited(&neighborPositions[i]))
+      {
+        uint8_t g_score = this->euclideanDistance(start, &neighborPositions[i]);
+        uint8_t h_score = this->euclideanDistance(&neighborPositions[i], finish);
+
+        gridnode neighbor;
+        neighbor.pos = neighborPositions[i];
+        neighbor.father = node->pos;
+        neighbor.f_score = g_score + h_score;
+
+        this->unvisited.add(neighbor);
+      }
+    }
   }
 }
