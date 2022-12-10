@@ -134,6 +134,21 @@ bool AStar::isPresentOnUnvisited(point* nodePos)
   return false;
 }
 
+bool AStar::isPresentOnVisited(point* nodePos)
+{
+  gridnode auxNode;
+  for (uint16_t i=0; i<this->visited.size(); i++)
+  {
+    auxNode = visited.get(i);
+    if ((auxNode.pos.pos_x == nodePos->pos_x) && (auxNode.pos.pos_y == nodePos->pos_y))
+    {
+      return true;
+    }
+  }
+
+  return false;
+}
+
 bool AStar::isNeighborInsideGridMargins(gridnode* node, point* neighbor)
 {
   uint8_t x_difference = abs(node->pos.pos_x - neighbor->pos_x);
@@ -152,7 +167,8 @@ void AStar::registerNodeNeighbors(point* start, point* finish, gridnode* node)
     if (this->isNeighborInsideGridMargins(node, &neighborPositions[i]))
     {
       if (!this->isObstacleCell(neighborPositions[i].pos_x, neighborPositions[i].pos_y)
-        && !this->isPresentOnUnvisited(&neighborPositions[i]))
+        && !this->isPresentOnUnvisited(&neighborPositions[i])
+        && !this->isPresentOnVisited(&neighborPositions[i]))
       {
         uint8_t g_score = this->euclideanDistance(start, &neighborPositions[i]);
         uint8_t h_score = this->euclideanDistance(&neighborPositions[i], finish);
