@@ -91,15 +91,14 @@ LinkedList<gridnode> AStar::createUnvisitedElements(){
 }
 
 gridnode AStar::getLowestFScore(){
-  unvisited.sort(compare);
-  return unvisited.get(0);  
+  this->unvisited.sort(compare);
+  return this->unvisited.get(0);  
 }
 
-LinkedList<gridnode> AStar::unvisitedToVisited(){
+void AStar::unvisitedToVisited(){
   // Always return the first element of unvisited node
-  gridnode node = unvisited.shift();
-  visited.add(node);
-  return visited;  
+  gridnode node = this->unvisited.shift();
+  this->visited.add(node); 
 }
 
 static int AStar::compare(gridnode *a, gridnode *b){
@@ -157,8 +156,9 @@ bool AStar::isNeighborInsideGridMargins(gridnode* node, point* neighbor)
   return (x_difference == 1 && y_difference == 0) || (x_difference == 0 && y_difference == 1);
 }
 
-void AStar::registerNodeNeighbors(point* start, point* finish, gridnode* node)
+searchState AStar::registerNodeNeighbors(point* start, point* finish, gridnode* node)
 {
+  searchState reachedGoal;
   point neighborPositions[4] = {};
   this->getNodeNeighbors(node, &neighborPositions);
 
@@ -179,7 +179,40 @@ void AStar::registerNodeNeighbors(point* start, point* finish, gridnode* node)
         neighbor.f_score = g_score + h_score;
 
         this->unvisited.add(neighbor);
+        if (finish->pos_x == neighbor.pos.pos_x && finish->pos_y == neighbor.pos.pos_y){
+          reachedGoal = Completed;
+          return reachedGoal;
+        }
       }
     }
   }
+  reachedGoal = Searching;
+  return reachedGoal;
 }
+
+searchState AStar::visitNeighbors(gridnode *nodePosition, point *start, point *goal){
+  searchState state = this->registerNodeNeighbors(start, goal, nodePosition);
+  this->unvisitedToVisited();
+  if(state == Searching && this->unvisited.size() == 0){
+    state = Failed;
+  }
+  return state;
+  
+      
+}
+
+// ArduinoQueue<point> AStar::searchForOptimalPath(point start, point goal){
+//   //Insert start node to unvisited
+//   gridnode startNode;
+//   startNode.f_score = this->euclideanDistance(&start, &goal);
+//   startNode.pos = start;
+//   startNode.father = NULL;
+//   this->unvisited.add(startNode);
+
+//   gridnode initialStep = this->getLowestFScore();
+
+//   //Visit the neighbors
+  
+
+
+// }
