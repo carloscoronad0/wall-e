@@ -29,9 +29,11 @@ class AStar
 {
   public:
     AStar();
+    
     void initGrid();
     bool isObstacleCell(uint8_t i, uint8_t j);
     void addObstacleCell(uint8_t i, uint8_t j);
+    
     gridnode getLowestFScore();
     void unvisitedToVisited();
     searchState visitNeighbors(gridnode* nodePosition, point* start, point* goal);
