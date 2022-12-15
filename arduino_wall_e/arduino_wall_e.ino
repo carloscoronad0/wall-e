@@ -11,14 +11,14 @@ const int IN4 = 8;
 
 ///// Sensors pins
 // Distance Sensors
-const int dsFront;
-const int dsLeft;
-const int dsRight;
+const int dsFront = A0;
+const int dsLeft = A1;
+const int dsRight = A2;
 
 // Light Sensors;
-const int lsFront;
-const int lsLeft;
-const int lsRight;
+const int lsFront = A4;
+const int lsLeft = A5;
+const int lsRight = A6;
 
 // Variables to capture sensors values
 int dsFrontValue;
@@ -28,6 +28,10 @@ int dsRightValue;
 int lsFrontValue;
 int lsLeftValue;
 int lsRightValue;
+
+point initial = {.pos_x = 5, .pos_y = 0};
+point final = {.pos_x = 5, .pos_y = 120};
+bool obstacleFound = false;
 
 AStar a_star;
 
@@ -50,12 +54,55 @@ void setup() {
 void loop()
 {
   // Read Values of Sensors
+  dsFrontValue = analogRead(dsFront);
+  dsLeftValue = analogRead(dsLeft);
+  dsRightValue = analogRead(dsRight);
 
-  // Detect Obstacles
+  lsFrontValue = analogRead(lsFront);
+  lsLeftValue = analogRead(lsLeft);
+  lsRightValue = analogRead(lsRight);
 
+  // Detect Distance Sensors Obstacles
+  if(dsFrontValue > 600){
+    Serial.begin("Wall in front");
+    if(!(a_star.isObstacleCell(initial.pos_x, initial.pos_y))){
+      a_star.addObstacleCell(initial.pos_x + 1, initial.pos_y);
+    }
+  }
+  if(dsLeftValue > 600){
+    Serial.begin("Wall in left");
+    if(!(a_star.isObstacleCell(initial.pos_x + 1, initial.pos_y)) && !(a_star.isObstacleCell(initial.pos_x + 1, initial.pos_y - 1))){
+      a_star.addObstacleCell(initial.pos_x + 1, initial.pos_y - 1);
+    }
+  }
+  if(dsRightValue > 600){
+    Serial.begin("Wall in right");
+    if(!(a_star.isObstacleCell(initial.pos_x + 1, initial.pos_y)) && !(a_star.isObstacleCell(initial.pos_x + 1, initial.pos_y + 1))){
+      a_star.addObstacleCell(initial.pos_x + 1, initial.pos_y + 1);
+    }
+  }
 
-  goForward();
-  delay(2000);
+  // Detect Light Sensors Obstacles
+   if(lsFrontValue > 600){
+    Serial.begin("Light in front");
+    if(!(a_star.isObstacleCell(initial.pos_x, initial.pos_y))){
+      a_star.addObstacleCell(initial.pos_x + 1, initial.pos_y);
+    }
+  }
+  if(lsLeftValue > 600){
+    Serial.begin("Light in left");
+    if(!(a_star.isObstacleCell(initial.pos_x + 1, initial.pos_y)) && !(a_star.isObstacleCell(initial.pos_x + 1, initial.pos_y - 1))){
+      a_star.addObstacleCell(initial.pos_x + 1, initial.pos_y - 1);
+    }
+  }
+  if(lsRightValue > 600){
+    Serial.begin("Light in right");
+    if(!(a_star.isObstacleCell(initial.pos_x + 1, initial.pos_y)) && !(a_star.isObstacleCell(initial.pos_x + 1, initial.pos_y + 1))){
+      a_star.addObstacleCell(initial.pos_x + 1, initial.pos_y + 1);
+    }
+  }
+
+  // Move Robot
 }
 
 
@@ -77,7 +124,7 @@ void goBack (){
   digitalWrite (IN1, LOW);
   digitalWrite (IN2, HIGH);
   analogWrite (ENA, 128);
-  
+
   digitalWrite (IN3, LOW);
   digitalWrite (IN4, HIGH);
   analogWrite (ENB, 128);
@@ -86,7 +133,7 @@ void goRight (){
   digitalWrite (IN1, HIGH);
   digitalWrite (IN2, LOW);
   analogWrite (ENA, 200);
-  
+
   digitalWrite (IN3, LOW);
   digitalWrite (IN4, HIGH);
   analogWrite (ENB, 100);
@@ -104,7 +151,7 @@ void stop (){
   digitalWrite (IN1, LOW);
   digitalWrite (IN2, LOW);
   analogWrite (ENA, 0);
-  
+
   digitalWrite (IN3, LOW);
   digitalWrite (IN4, LOW);
   analogWrite (ENB, 0);
