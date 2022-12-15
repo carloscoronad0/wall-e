@@ -65,7 +65,7 @@ void loop()
   // Detect Distance Sensors Obstacles
   if(dsFrontValue > 600){
     Serial.begin("Wall in front");
-    if(initial.pos_x < 20 && initial.pos_y + 1 < 64){
+    if(initial.pos_x < ROW && initial.pos_y + 1 < GRID_DIV_SCALE * GRID_DIV){
       if(!(a_star.isObstacleCell(initial.pos_x, initial.pos_y + 1))){
         a_star.addObstacleCell(initial.pos_x, initial.pos_y + 1);
         obstacleFound = true;
@@ -84,7 +84,7 @@ void loop()
   }
   if(dsRightValue > 600){
     Serial.begin("Wall in right");
-    if(initial.pos_x + 1 < 20){
+    if(initial.pos_x + 1 < ROW){
       if(!(a_star.isObstacleCell(initial.pos_x + 1, initial.pos_y))){
         a_star.addObstacleCell(initial.pos_x + 1, initial.pos_y);
         obstacleFound = true;
@@ -95,7 +95,7 @@ void loop()
   // Detect Light Sensors Obstacles
   if(lsFrontValue > 600){
     Serial.begin("Light in front");
-    if(initial.pos_y + 1 < 64){
+    if(initial.pos_y + 1 < GRID_DIV_SCALE * GRID_DIV){
       if(!(a_star.isObstacleCell(initial.pos_x, initial.pos_y + 1))){
         a_star.addObstacleCell(initial.pos_x, initial.pos_y + 1);
         obstacleFound = true;
@@ -104,7 +104,7 @@ void loop()
   }
   if(lsLeftValue > 600){
     Serial.begin("Light in left");
-    if(initial.pos_x - 1 >= 0 && initial.pos_y + 1 < 64){
+    if(initial.pos_x - 1 >= 0 && initial.pos_y + 1 < GRID_DIV_SCALE * GRID_DIV){
       if(!(a_star.isObstacleCell(initial.pos_x - 1, initial.pos_y + 1))){
         a_star.addObstacleCell(initial.pos_x - 1, initial.pos_y + 1);
         obstacleFound = true;
@@ -113,7 +113,7 @@ void loop()
   }
   if(lsRightValue > 600){
     Serial.begin("Light in right");
-    if(initial.pos_x + 1 < 20 && initial.pos_y + 1 < 64){
+    if(initial.pos_x + 1 < ROW && initial.pos_y + 1 < GRID_DIV_SCALE * GRID_DIV){
       if(!(a_star.isObstacleCell(initial.pos_x + 1, initial.pos_y + 1))){
         a_star.addObstacleCell(initial.pos_x + 1, initial.pos_y + 1);
         obstacleFound = true;
