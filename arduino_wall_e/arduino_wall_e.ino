@@ -29,8 +29,8 @@ int lsFrontValue;
 int lsLeftValue;
 int lsRightValue;
 
-point initial = {.pos_x = 5, .pos_y = 0};
-point final = {.pos_x = 5, .pos_y = 120};
+point initial = {.pos_x = 10, .pos_y = 0};
+point final = {.pos_x = 10, .pos_y = 57};
 bool obstacleFound = false;
 
 AStar a_star;
@@ -65,42 +65,61 @@ void loop()
   // Detect Distance Sensors Obstacles
   if(dsFrontValue > 600){
     Serial.begin("Wall in front");
-    if(!(a_star.isObstacleCell(initial.pos_x, initial.pos_y))){
-      a_star.addObstacleCell(initial.pos_x + 1, initial.pos_y);
+    if(initial.pos_x < 20 && initial.pos_y + 1 < 64){
+      if(!(a_star.isObstacleCell(initial.pos_x, initial.pos_y + 1))){
+        a_star.addObstacleCell(initial.pos_x, initial.pos_y + 1);
+        obstacleFound = true;
+      } 
     }
   }
+
   if(dsLeftValue > 600){
     Serial.begin("Wall in left");
-    if(!(a_star.isObstacleCell(initial.pos_x + 1, initial.pos_y)) && !(a_star.isObstacleCell(initial.pos_x + 1, initial.pos_y - 1))){
-      a_star.addObstacleCell(initial.pos_x + 1, initial.pos_y - 1);
+    if(initial.pos_x - 1 >= 0){
+      if(!(a_star.isObstacleCell(initial.pos_x - 1, initial.pos_y))){
+        a_star.addObstacleCell(initial.pos_x - 1, initial.pos_y);
+        obstacleFound = true;
+      }
     }
   }
   if(dsRightValue > 600){
     Serial.begin("Wall in right");
-    if(!(a_star.isObstacleCell(initial.pos_x + 1, initial.pos_y)) && !(a_star.isObstacleCell(initial.pos_x + 1, initial.pos_y + 1))){
-      a_star.addObstacleCell(initial.pos_x + 1, initial.pos_y + 1);
+    if(initial.pos_x + 1 < 20){
+      if(!(a_star.isObstacleCell(initial.pos_x + 1, initial.pos_y))){
+        a_star.addObstacleCell(initial.pos_x + 1, initial.pos_y);
+        obstacleFound = true;
+      }
     }
   }
 
   // Detect Light Sensors Obstacles
-   if(lsFrontValue > 600){
+  if(lsFrontValue > 600){
     Serial.begin("Light in front");
-    if(!(a_star.isObstacleCell(initial.pos_x, initial.pos_y))){
-      a_star.addObstacleCell(initial.pos_x + 1, initial.pos_y);
+    if(initial.pos_y + 1 < 64){
+      if(!(a_star.isObstacleCell(initial.pos_x, initial.pos_y + 1))){
+        a_star.addObstacleCell(initial.pos_x, initial.pos_y + 1);
+        obstacleFound = true;
+      }
     }
   }
   if(lsLeftValue > 600){
     Serial.begin("Light in left");
-    if(!(a_star.isObstacleCell(initial.pos_x + 1, initial.pos_y)) && !(a_star.isObstacleCell(initial.pos_x + 1, initial.pos_y - 1))){
-      a_star.addObstacleCell(initial.pos_x + 1, initial.pos_y - 1);
+    if(initial.pos_x - 1 >= 0 && initial.pos_y + 1 < 64){
+      if(!(a_star.isObstacleCell(initial.pos_x - 1, initial.pos_y + 1))){
+        a_star.addObstacleCell(initial.pos_x - 1, initial.pos_y + 1);
+        obstacleFound = true;
+      }
     }
   }
   if(lsRightValue > 600){
     Serial.begin("Light in right");
-    if(!(a_star.isObstacleCell(initial.pos_x + 1, initial.pos_y)) && !(a_star.isObstacleCell(initial.pos_x + 1, initial.pos_y + 1))){
-      a_star.addObstacleCell(initial.pos_x + 1, initial.pos_y + 1);
+    if(initial.pos_x + 1 < 20 && initial.pos_y + 1 < 64){
+      if(!(a_star.isObstacleCell(initial.pos_x + 1, initial.pos_y + 1))){
+        a_star.addObstacleCell(initial.pos_x + 1, initial.pos_y + 1);
+        obstacleFound = true;
+      }
     }
-  }
+  } 
 
   // Move Robot
 }

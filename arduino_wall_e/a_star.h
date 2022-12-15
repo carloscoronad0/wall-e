@@ -5,10 +5,10 @@
 #include <ArduinoQueue.h>
 #include <LinkedList.h>
 
-#define GRID_DIV_SCALE 16
-#define ROW 10
-#define COL 32
-#define GRID_DIV 4
+// Grid Limit (20, 64) -> (19,63)
+#define GRID_DIV_SCALE 8
+#define ROW 20
+#define GRID_DIV 8
 
 enum searchState { Searching, Failed, Completed };
 
