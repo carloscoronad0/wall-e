@@ -11,7 +11,7 @@ WorldInfo {
 }
 Viewpoint {
   orientation 0.43475353629795155 -0.2801309186083502 -0.8558715038579492 4.149543824504522
-  position 0.6463446281560854 -1.88294054098262 2.691448757508282
+  position 1.8472027448865864 -4.529105945880546 6.67030647196908
 }
 TexturedBackground {
 }
@@ -197,8 +197,8 @@ DEF wall-e Robot {
         position 4031.7649844006214
       }
       endPoint Solid {
-        translation 0.07361959426549902 -0.03999584327616979 0.0014986302679728392
-        rotation -0.7173082859203361 -0.44921121458376995 -0.5326144080309915 0.8066414825924015
+        translation 0.07361959426549902 -0.03999584327616979 0.0014986302679728379
+        rotation -0.7173082859203361 -0.4492112145837699 -0.5326144080309917 0.8066414825924015
         children [
           DEF ball Shape {
             appearance PBRAppearance {
@@ -236,7 +236,7 @@ DEF wall-e Robot {
       ]
       endPoint Solid {
         translation -0.06004074114069433 -0.03998674525290019 -0.05000184065243736
-        rotation -1.5275474413906218e-06 -4.738539591301535e-06 0.9999999999876064 5.014753324234367
+        rotation -1.5275474413906216e-06 -4.738539591301535e-06 0.9999999999876064 5.014753324234367
         children [
           DEF wheel Shape {
             appearance PBRAppearance {
@@ -275,7 +275,7 @@ DEF wall-e Robot {
       ]
       endPoint Solid {
         translation -0.05999190113846406 -0.040027849139345956 0.05001002093556352
-        rotation -9.397307352009817e-07 -1.239074710182617e-06 0.9999999999987909 3.2465088159414064
+        rotation -9.397307352009822e-07 -1.2390747101826172e-06 0.9999999999987909 3.2465088159414064
         children [
           DEF wheel Shape {
             appearance PBRAppearance {
@@ -352,7 +352,7 @@ DEF box02-wall05 Wall {
   size 0.01 0.18 0.3
 }
 DEF box03-wall01 Wall {
-  translation 0.07 -1.02 0
+  translation 0.05 -1.02 0
   name "box03-wall01"
   size 0.01 0.48 0.3
 }
@@ -398,12 +398,6 @@ DEF light04 CeilingSpotLight {
   name "light04"
   spotLightRadius 0.3
 }
-DEF light05 CeilingSpotLight {
-  translation 0.18 -1.26 0.33
-  rotation 0 1 0 0
-  name "light05"
-  spotLightRadius 0.3
-}
 DEF light06 CeilingSpotLight {
   translation -0.21 -1.51 0.33
   rotation 0 1 0 0
@@ -411,7 +405,7 @@ DEF light06 CeilingSpotLight {
   spotLightRadius 0.3
 }
 DEF light07 CeilingSpotLight {
-  translation 0.11 -1.73 0.33
+  translation -0.05 -1.73 0.33
   rotation 0 1 0 0
   name "light07"
   spotLightRadius 0.3
