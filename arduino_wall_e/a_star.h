@@ -29,22 +29,29 @@ class AStar
 {
   public:
     AStar();
-    
+
     void initGrid();
     bool isObstacleCell(uint8_t i, uint8_t j);
     void addObstacleCell(uint8_t i, uint8_t j);
-    
+    // General management functions
+    uint8_t euclideanDistance(point* p1, point* p2);
     gridnode getLowestFScore();
     void unvisitedToVisited();
-    searchState visitNeighbors(gridnode* nodePosition, point* start, point* goal);
-    void getNodeNeighbors(gridnode* node, point (*pArray)[4]);
-    uint8_t euclideanDistance(point* p1, point* p2);
-    searchState registerNodeNeighbors(point* start, point* finish, gridnode* node);
+    // Bool functions
     bool isPresentOnUnvisited(point* nodePos);
     bool isPresentOnVisited(point* nodePos);
     bool isNeighborInsideGridMargins(gridnode* node, point* neighbor);
-    //ArduinoQueue<point> searchForOptimalPath(point start, point goal);  
+    // Neighbor management
+    void getNodeNeighbors(gridnode* node, point (*pArray)[4]);
+    searchState registerNodeNeighbors(point* start, point* finish, gridnode* node);
+    searchState visitNeighbors(gridnode* nodePosition, point* start, point* goal);
+    // Wrapper function
+    // ArduinoQueue<point> searchForOptimalPath(point start, point goal);
+    bool getNodeFather(point *fatherPos, gridnode *fatherNode);
+    bool createOptimalPathQueue(point *start, point *goal);
+    void searchForOptimalPath(point start, point goal);
 
+    // Aux functions
     static int compare(gridnode *a, gridnode*b);
     void printGridOnSerial();
     LinkedList<gridnode> createUnvisitedElements();
@@ -52,6 +59,7 @@ class AStar
     uint16_t grid [ROW][GRID_DIV];
     LinkedList<gridnode> unvisited = LinkedList<gridnode>();
     LinkedList<gridnode> visited = LinkedList<gridnode>();
+    LinkedList<point> optimalPath = LinkedList<point>();
 };
 
 #endif

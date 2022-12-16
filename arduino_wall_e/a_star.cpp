@@ -9,7 +9,7 @@ void AStar::initGrid(){
     {
       grid[i][j]=0;
     }
-  }  
+  }
 }
 
 bool AStar::isObstacleCell(uint8_t i, uint8_t j){
@@ -24,6 +24,16 @@ void AStar::addObstacleCell(uint8_t i, uint8_t j){
   grid[i][inGridDiv] |= (1<<posInDiv);
 }
 
+// Aux functions ------------------------------------------------------
+
+static int AStar::compare(gridnode *a, gridnode *b){
+  if (a->f_score >= b->f_score){
+    return 1;
+  }else{
+    return 0;
+  }
+}
+
 void AStar::printGridOnSerial(){
   for (int8_t i=0; i<ROW; i++)
   {
@@ -34,20 +44,7 @@ void AStar::printGridOnSerial(){
       Serial.print(" ");
     }
     Serial.println();
-  }  
-}
-
-// No introducir nodos (posiciones registradas en UNVISITED y VISITED) repetidas a UNVISITED
-void AStar::getNodeNeighbors(gridnode *node, point (*pArray)[4]){
-  point p0 = {.pos_x = node->pos.pos_x, .pos_y = node->pos.pos_y + 1};
-  point p1 = {.pos_x = node->pos.pos_x, .pos_y = node->pos.pos_y - 1};
-  point p2 = {.pos_x = node->pos.pos_x + 1, .pos_y = node->pos.pos_y};
-  point p3 = {.pos_x = node->pos.pos_x - 1, .pos_y = node->pos.pos_y};
-
-  (*pArray)[0] = p0;
-  (*pArray)[1] = p1;
-  (*pArray)[2] = p2;
-  (*pArray)[3] = p3;
+  }
 }
 
 //Create elements for unvisited list
@@ -90,24 +87,7 @@ LinkedList<gridnode> AStar::createUnvisitedElements(){
   return unvisited;
 }
 
-gridnode AStar::getLowestFScore(){
-  this->unvisited.sort(compare);
-  return this->unvisited.get(0);  
-}
-
-void AStar::unvisitedToVisited(){
-  // Always return the first element of unvisited node
-  gridnode node = this->unvisited.shift();
-  this->visited.add(node); 
-}
-
-static int AStar::compare(gridnode *a, gridnode *b){
-  if (a->f_score >= b->f_score){
-    return 1;
-  }else{
-    return 0;
-  }
-}
+// General management functions ---------------------------------------
 
 uint8_t AStar::euclideanDistance(point *p1, point *p2)
 {
@@ -118,6 +98,19 @@ uint8_t AStar::euclideanDistance(point *p1, point *p2)
 
   return res;
 }
+
+void AStar::unvisitedToVisited(){
+  // Always return the first element of unvisited node
+  gridnode node = this->unvisited.shift();
+  this->visited.add(node);
+}
+
+gridnode AStar::getLowestFScore(){
+  this->unvisited.sort(compare);
+  return this->unvisited.get(0);
+}
+
+// Bool functions -----------------------------------------------------
 
 bool AStar::isPresentOnUnvisited(point* nodePos)
 {
@@ -154,6 +147,20 @@ bool AStar::isNeighborInsideGridMargins(gridnode* node, point* neighbor)
   uint8_t y_difference = abs(node->pos.pos_y - neighbor->pos_y);
 
   return (x_difference == 1 && y_difference == 0) || (x_difference == 0 && y_difference == 1);
+}
+
+// Neighbor management ------------------------------------------------
+
+void AStar::getNodeNeighbors(gridnode *node, point (*pArray)[4]){
+  point p0 = {.pos_x = node->pos.pos_x, .pos_y = node->pos.pos_y + 1};
+  point p1 = {.pos_x = node->pos.pos_x, .pos_y = node->pos.pos_y - 1};
+  point p2 = {.pos_x = node->pos.pos_x + 1, .pos_y = node->pos.pos_y};
+  point p3 = {.pos_x = node->pos.pos_x - 1, .pos_y = node->pos.pos_y};
+
+  (*pArray)[0] = p0;
+  (*pArray)[1] = p1;
+  (*pArray)[2] = p2;
+  (*pArray)[3] = p3;
 }
 
 searchState AStar::registerNodeNeighbors(point* start, point* finish, gridnode* node)
@@ -197,22 +204,66 @@ searchState AStar::visitNeighbors(gridnode *nodePosition, point *start, point *g
     state = Failed;
   }
   return state;
-  
-      
 }
 
-// ArduinoQueue<point> AStar::searchForOptimalPath(point start, point goal){
-//   //Insert start node to unvisited
-//   gridnode startNode;
-//   startNode.f_score = this->euclideanDistance(&start, &goal);
-//   startNode.pos = start;
-//   startNode.father = NULL;
-//   this->unvisited.add(startNode);
+// Wrapper function ---------------------------------------------------
 
-//   gridnode initialStep = this->getLowestFScore();
+bool AStar::getNodeFather(point *fatherPos, gridnode *fatherNode){
+    gridnode aux;
+    for (uint16_t i=0; i<this->visited.size(); i++){
+        aux = this->visited.get(i);
+        if (aux.pos.pos_x == fatherPos->pos_x && aux.pos.pos_y == fatherPos->pos_y){
+            fatherNode = &aux;
+            return true;
+        }
+    }
+    return false;
+}
 
-//   //Visit the neighbors
-  
+bool AStar::createOptimalPathQueue(point *start, point *goal){
+    bool success;
+    point inPathPoint;
+    point fatherPoint;
+    gridnode inPathNode;
 
+    // The last inserted element is the goalnode
+    inPathNode = this->unvisited.pop();
+    inPathPoint = inPathNode.pos;
+    this->optimalPath.add(inPathPoint);
 
-// }
+    while (inPathPoint.pos_x != start->pos_x && inPathPoint.pos_y != start->pos_y){
+        fatherPoint = inPathNode.father;
+        success = this->getNodeFather(&fatherPoint, &inPathNode);
+        if (!success){
+            return false;
+        }
+
+        inPathPoint = inPathNode.pos;
+        this->optimalPath.add(inPathPoint);
+    }
+
+    return true;
+}
+
+void AStar::searchForOptimalPath(point start, point goal){
+  //Insert start node to unvisited
+  gridnode startNode;
+  startNode.f_score = this->euclideanDistance(&start, &goal);
+  startNode.pos = start;
+  // startNode.father = NULL;
+  this->unvisited.add(startNode);
+
+  gridnode step;
+
+  //Visit the neighbors
+  searchState state = this->visitNeighbors(&startNode, &start, &goal);
+  while (state == Searching) {
+    step = this->getLowestFScore();
+    state = this->visitNeighbors(&step, &start, &goal);
+  }
+
+  if (state == Completed) {
+    // Path to goal completed
+    bool success = this->createOptimalPathQueue(&start, &goal);
+  }
+}
